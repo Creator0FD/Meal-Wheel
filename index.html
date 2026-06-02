@@ -13,7 +13,6 @@
       --card: rgba(255, 255, 255, 0.88);
       --border: rgba(255, 255, 255, 0.55);
       --shadow: 0 24px 70px rgba(31, 41, 55, 0.18);
-      --accent: #111827;
     }
 
     * {
@@ -148,12 +147,18 @@
       border-radius: 10px;
     }
 
-    .button-row {
+    .button-row,
+    .editor-buttons {
       display: flex;
       justify-content: center;
       gap: 12px;
       flex-wrap: wrap;
       margin-top: 8px;
+    }
+
+    .editor-buttons {
+      justify-content: flex-start;
+      align-items: center;
     }
 
     button {
@@ -306,6 +311,14 @@
       font-size: 15px;
     }
 
+    .saved-status {
+      margin-top: 10px;
+      color: #16a34a;
+      font-size: 13px;
+      font-weight: 800;
+      min-height: 18px;
+    }
+
     .footer-note {
       margin-top: 18px;
       color: var(--muted);
@@ -333,12 +346,14 @@
         margin-top: 10px;
       }
 
-      #spinButton {
+      #spinButton,
+      .secondary-button,
+      .small-button {
         width: 100%;
       }
 
-      .secondary-button {
-        width: 100%;
+      .editor-buttons {
+        justify-content: center;
       }
     }
   </style>
@@ -374,7 +389,7 @@
         <details>
           <summary>Edit meal options</summary>
           <div class="editor">
-            <p>Put one meal/place per line, then click update.</p>
+            <p>Put one meal/place per line, then click update. Your list saves only on this device/browser.</p>
             <textarea id="optionsBox">Pizza
 Burgers
 Sushi
@@ -383,7 +398,11 @@ Chinese
 Mediterranean
 Deli
 Salad</textarea>
-            <button class="small-button" onclick="updateOptions()">Update Wheel</button>
+            <div class="editor-buttons">
+              <button class="small-button" onclick="updateOptions()">Update & Save Wheel</button>
+              <button class="secondary-button" onclick="clearSavedOptions()">Clear Saved Options</button>
+            </div>
+            <div id="savedStatus" class="saved-status"></div>
           </div>
         </details>
 
@@ -402,8 +421,9 @@ Salad</textarea>
     const spinButton = document.getElementById("spinButton");
     const result = document.getElementById("result");
     const resultCard = document.getElementById("resultCard");
+    const savedStatus = document.getElementById("savedStatus");
 
-    let options = [
+    const defaultOptions = [
       "Pizza",
       "Burgers",
       "Sushi",
@@ -414,6 +434,7 @@ Salad</textarea>
       "Salad"
     ];
 
+    let options = [...defaultOptions];
     let currentRotation = -Math.PI / 2;
     let spinning = false;
 
@@ -429,6 +450,46 @@ Salad</textarea>
       ["#f472b6", "#db2777"],
       ["#a3e635", "#65a30d"]
     ];
+
+    function showSavedStatus(message) {
+      savedStatus.textContent = message;
+      setTimeout(() => {
+        savedStatus.textContent = "";
+      }, 2400);
+    }
+
+    function loadSavedOptions() {
+      const saved = localStorage.getItem("mealWheelOptions");
+
+      if (!saved) return;
+
+      try {
+        const parsed = JSON.parse(saved);
+
+        if (Array.isArray(parsed) && parsed.length >= 2) {
+          options = parsed;
+          document.getElementById("optionsBox").value = parsed.join("\n");
+        }
+      } catch (error) {
+        localStorage.removeItem("mealWheelOptions");
+      }
+    }
+
+    function saveOptionsToDevice() {
+      localStorage.setItem("mealWheelOptions", JSON.stringify(options));
+      showSavedStatus("Saved on this device.");
+    }
+
+    function clearSavedOptions() {
+      localStorage.removeItem("mealWheelOptions");
+      options = [...defaultOptions];
+      document.getElementById("optionsBox").value = defaultOptions.join("\n");
+      resultCard.style.display = "none";
+      result.textContent = "";
+      currentRotation = -Math.PI / 2;
+      drawWheel();
+      showSavedStatus("Saved options cleared.");
+    }
 
     function drawWheel() {
       const center = canvas.width / 2;
@@ -564,6 +625,7 @@ Salad</textarea>
       }
 
       options = newOptions;
+      saveOptionsToDevice();
       resultCard.style.display = "none";
       result.textContent = "";
       currentRotation = -Math.PI / 2;
@@ -578,6 +640,7 @@ Salad</textarea>
     }
 
     spinButton.addEventListener("click", spinWheel);
+    loadSavedOptions();
     drawWheel();
   </script>
 </body>
