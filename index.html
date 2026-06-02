@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lunch Spin Wheel</title>
+  <title>Meal Spin Wheel</title>
   <style>
     :root {
       --bg-1: #fff7ed;
@@ -312,6 +312,14 @@
       font-size: 13px;
     }
 
+    .support-section {
+      margin-top: 22px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 48px;
+    }
+
     @media (max-width: 520px) {
       body {
         padding: 20px 12px;
@@ -338,9 +346,9 @@
 <body>
   <main class="page">
     <section class="hero">
-      <div class="badge">Lunch Decider</div>
+      <div class="badge">Meal Decider</div>
       <h1>Where should we eat?</h1>
-      <p class="subtitle">Add the lunch options, send this page around, and let the wheel decide.</p>
+      <p class="subtitle">Add the meal options, send this page around, and let the wheel decide.</p>
     </section>
 
     <section class="app-card">
@@ -364,9 +372,9 @@
         </div>
 
         <details>
-          <summary>Edit lunch options</summary>
+          <summary>Edit meal options</summary>
           <div class="editor">
-            <p>Put one place per line, then click update.</p>
+            <p>Put one meal/place per line, then click update.</p>
             <textarea id="optionsBox">Pizza
 Burgers
 Sushi
@@ -379,7 +387,11 @@ Salad</textarea>
           </div>
         </details>
 
-        <div class="footer-note">Tip: save or text this HTML file so anyone can open it in a browser.</div>
+        <div class="footer-note">Tip: share the link so anyone can open the Meal Wheel in a browser.</div>
+
+        <div class="support-section">
+          <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="creator0FD" data-color="#FFDD00" data-emoji="" data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff"></script>
+        </div>
       </div>
     </section>
   </main>
@@ -417,20 +429,6 @@ Salad</textarea>
       ["#f472b6", "#db2777"],
       ["#a3e635", "#65a30d"]
     ];
-
-    function roundRect(ctx, x, y, width, height, radius) {
-      ctx.beginPath();
-      ctx.moveTo(x + radius, y);
-      ctx.lineTo(x + width - radius, y);
-      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-      ctx.lineTo(x + width, y + height - radius);
-      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-      ctx.lineTo(x + radius, y + height);
-      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-      ctx.lineTo(x, y + radius);
-      ctx.quadraticCurveTo(x, y, x + radius, y);
-      ctx.closePath();
-    }
 
     function drawWheel() {
       const center = canvas.width / 2;
@@ -501,7 +499,7 @@ Salad</textarea>
       ctx.font = "900 22px Arial";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText("LUNCH", center, center - 5);
+      ctx.fillText("MEAL", center, center - 5);
 
       ctx.font = "700 13px Arial";
       ctx.fillStyle = "rgba(255,255,255,0.72)";
@@ -561,7 +559,7 @@ Salad</textarea>
         .filter(Boolean);
 
       if (newOptions.length < 2) {
-        alert("Please enter at least two lunch options.");
+        alert("Please enter at least two meal options.");
         return;
       }
 
