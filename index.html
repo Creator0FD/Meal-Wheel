@@ -4,33 +4,48 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Meal Spin Wheel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-1: #fff7ed;
-      --bg-2: #eef2ff;
-      --ink: #1f2937;
-      --muted: #6b7280;
-      --card: rgba(255, 255, 255, 0.88);
-      --border: rgba(255, 255, 255, 0.55);
-      --shadow: 0 24px 70px rgba(31, 41, 55, 0.18);
+      --bg-warm: #fdf6ee;
+      --accent-orange: #e8611a;
+      --accent-amber: #f59e0b;
+      --ink: #1a120b;
+      --ink-soft: #4a3728;
+      --muted: #8c7b6e;
+      --card: rgba(255, 252, 247, 0.92);
+      --border: rgba(232, 97, 26, 0.12);
+      --shadow-warm: 0 28px 72px rgba(26, 18, 11, 0.14);
+      --radius-card: 28px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       min-height: 100vh;
-      margin: 0;
-      padding: 28px 18px;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      padding: 36px 18px 60px;
+      font-family: 'DM Sans', ui-sans-serif, sans-serif;
       color: var(--ink);
       text-align: center;
       background:
-        radial-gradient(circle at top left, #fed7aa 0, transparent 33%),
-        radial-gradient(circle at bottom right, #c7d2fe 0, transparent 36%),
-        linear-gradient(135deg, var(--bg-1), var(--bg-2));
+        radial-gradient(ellipse at 10% 0%, #fde4c8 0%, transparent 40%),
+        radial-gradient(ellipse at 90% 100%, #fde4c8 0%, transparent 40%),
+        var(--bg-warm);
       overflow-x: hidden;
+    }
+
+    /* subtle grain overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.028;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px;
+      z-index: 999;
     }
 
     .page {
@@ -38,67 +53,74 @@
       margin: 0 auto;
     }
 
+    /* ── HERO ── */
     .hero {
-      margin: 8px auto 22px;
+      margin: 0 auto 28px;
     }
 
     .badge {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 7px 13px;
+      gap: 7px;
+      padding: 6px 14px;
       border-radius: 999px;
-      font-size: 14px;
-      font-weight: 700;
-      color: #92400e;
-      background: rgba(255, 247, 237, 0.86);
-      border: 1px solid rgba(251, 146, 60, 0.25);
-      box-shadow: 0 8px 22px rgba(251, 146, 60, 0.12);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-orange);
+      background: rgba(232, 97, 26, 0.08);
+      border: 1px solid rgba(232, 97, 26, 0.2);
     }
 
     h1 {
-      margin: 14px 0 8px;
-      font-size: clamp(36px, 7vw, 64px);
+      margin: 14px 0 10px;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(38px, 7vw, 68px);
+      font-weight: 900;
       line-height: 0.95;
-      letter-spacing: -0.06em;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+    }
+
+    h1 span {
+      color: var(--accent-orange);
     }
 
     .subtitle {
-      max-width: 570px;
+      max-width: 500px;
       margin: 0 auto;
       color: var(--muted);
-      font-size: 17px;
-      line-height: 1.45;
+      font-size: 16px;
+      line-height: 1.5;
+      font-weight: 500;
     }
 
+    /* ── CARD ── */
     .app-card {
       position: relative;
-      width: min(760px, 100%);
-      margin: 24px auto 0;
-      padding: clamp(18px, 4vw, 34px);
-      border-radius: 32px;
+      width: min(780px, 100%);
+      margin: 0 auto;
+      padding: clamp(20px, 4vw, 36px);
+      border-radius: var(--radius-card);
       background: var(--card);
       border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(18px);
-      overflow: hidden;
+      box-shadow: var(--shadow-warm);
+      backdrop-filter: blur(20px);
     }
 
     .app-card::before {
       content: "";
       position: absolute;
       inset: 0;
+      border-radius: var(--radius-card);
       pointer-events: none;
-      background:
-        linear-gradient(120deg, rgba(255,255,255,0.75), transparent 42%),
-        radial-gradient(circle at 18% 10%, rgba(255,255,255,0.95), transparent 20%);
+      background: linear-gradient(155deg, rgba(255,255,255,0.7) 0%, transparent 45%);
     }
 
-    .content {
-      position: relative;
-      z-index: 1;
-    }
+    .content { position: relative; z-index: 1; }
 
+    /* ── WHEEL ── */
     .wheel-area {
       display: grid;
       place-items: center;
@@ -106,59 +128,69 @@
 
     .wheel-container {
       position: relative;
-      width: min(82vw, 470px);
-      height: min(82vw, 470px);
-      margin: 8px auto 20px;
-      filter: drop-shadow(0 24px 28px rgba(17, 24, 39, 0.18));
+      width: min(80vw, 460px);
+      height: min(80vw, 460px);
+      margin: 6px auto 22px;
+    }
+
+    /* decorative ring behind the wheel */
+    .wheel-container::before {
+      content: "";
+      position: absolute;
+      inset: -14px;
+      border-radius: 50%;
+      background: conic-gradient(
+        #e8611a, #f59e0b, #84cc16, #22d3ee, #818cf8, #f472b6, #e8611a
+      );
+      opacity: 0.18;
+      filter: blur(8px);
     }
 
     canvas {
+      position: relative;
+      z-index: 1;
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      background: white;
+      display: block;
     }
 
     .rim {
       position: absolute;
-      inset: -10px;
+      inset: -8px;
+      z-index: 2;
       border-radius: 50%;
-      border: 10px solid rgba(255,255,255,0.75);
+      border: 8px solid rgba(255, 252, 247, 0.9);
       box-shadow:
-        inset 0 0 0 2px rgba(17,24,39,0.06),
-        0 12px 35px rgba(17,24,39,0.15);
+        inset 0 0 0 2px rgba(26,18,11,0.06),
+        0 10px 30px rgba(26,18,11,0.12);
       pointer-events: none;
     }
 
     .pointer-wrap {
       position: absolute;
-      top: -24px;
+      top: -20px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 4;
-      filter: drop-shadow(0 8px 9px rgba(0,0,0,0.22));
+      z-index: 5;
+      filter: drop-shadow(0 6px 8px rgba(0,0,0,0.22));
     }
 
     .pointer {
-      width: 54px;
-      height: 62px;
-      background: linear-gradient(180deg, #111827, #374151);
-      clip-path: polygon(50% 100%, 0 0, 100% 0);
-      border-radius: 10px;
+      width: 46px;
+      height: 54px;
+      background: linear-gradient(170deg, var(--accent-orange), #c2440e);
+      clip-path: polygon(50% 100%, 0% 4%, 100% 4%);
+      border-radius: 6px;
     }
 
-    .button-row,
-    .editor-buttons {
+    /* ── BUTTONS ── */
+    .button-row {
       display: flex;
       justify-content: center;
       gap: 12px;
       flex-wrap: wrap;
-      margin-top: 8px;
-    }
-
-    .editor-buttons {
-      justify-content: flex-start;
-      align-items: center;
+      margin-top: 6px;
     }
 
     button {
@@ -166,163 +198,201 @@
       cursor: pointer;
       font-family: inherit;
       font-weight: 800;
-      transition: transform 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
     }
 
-    button:active {
-      transform: translateY(1px) scale(0.99);
-    }
-
-    button:disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
-    }
+    button:hover:not(:disabled) { transform: translateY(-2px); }
+    button:active:not(:disabled) { transform: translateY(1px) scale(0.98); }
+    button:disabled { opacity: 0.45; cursor: not-allowed; }
 
     #spinButton {
       position: relative;
-      min-width: 190px;
+      min-width: 180px;
       padding: 16px 34px;
-      border-radius: 18px;
+      border-radius: 16px;
       color: white;
-      font-size: 22px;
-      background: linear-gradient(135deg, #111827, #4f46e5);
-      box-shadow: 0 16px 30px rgba(79, 70, 229, 0.28);
+      font-size: 20px;
+      letter-spacing: -0.01em;
+      background: linear-gradient(145deg, #e8611a, #c2440e);
+      box-shadow: 0 14px 28px rgba(232, 97, 26, 0.32), inset 0 1px 0 rgba(255,255,255,0.18);
       overflow: hidden;
     }
 
     #spinButton::after {
       content: "";
       position: absolute;
-      top: -120%;
-      left: -30%;
-      width: 80px;
-      height: 300%;
-      transform: rotate(24deg);
+      top: -120%; left: -30%;
+      width: 70px; height: 300%;
+      transform: rotate(22deg);
       background: rgba(255,255,255,0.22);
-      transition: left 0.45s ease;
+      transition: left 0.4s ease;
     }
 
-    #spinButton:hover::after {
-      left: 120%;
-    }
+    #spinButton:hover::after { left: 120%; }
 
     .secondary-button {
-      padding: 12px 18px;
-      border-radius: 15px;
-      color: #111827;
-      background: rgba(255,255,255,0.78);
-      border: 1px solid rgba(17,24,39,0.08);
-      box-shadow: 0 10px 24px rgba(17,24,39,0.08);
+      padding: 13px 20px;
+      border-radius: 14px;
+      color: var(--ink-soft);
+      background: rgba(255,252,247,0.9);
+      border: 1px solid rgba(26,18,11,0.1);
+      box-shadow: 0 6px 18px rgba(26,18,11,0.07);
       font-size: 15px;
     }
 
+    /* ── RESULT CARD ── */
     #resultCard {
       display: none;
-      width: min(500px, 100%);
+      width: min(480px, 100%);
       margin: 22px auto 0;
-      padding: 18px 20px;
-      border-radius: 24px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(255,247,237,0.88));
-      border: 1px solid rgba(251, 146, 60, 0.25);
-      box-shadow: 0 18px 35px rgba(251, 146, 60, 0.14);
+      padding: 20px 22px;
+      border-radius: 20px;
+      background: linear-gradient(145deg, #fff8f2, #fef3e8);
+      border: 1px solid rgba(232, 97, 26, 0.2);
+      box-shadow: 0 16px 38px rgba(232, 97, 26, 0.13);
+      animation: slideUp 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(14px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     .result-label {
-      color: #92400e;
-      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: var(--accent-orange);
+      font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-weight: 900;
+      letter-spacing: 0.15em;
+      font-weight: 800;
+    }
+
+    .result-label::before,
+    .result-label::after {
+      content: "✦";
+      font-size: 8px;
+      opacity: 0.6;
     }
 
     #result {
-      font-size: clamp(30px, 6vw, 46px);
-      font-weight: 950;
-      margin-top: 3px;
-      letter-spacing: -0.04em;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(28px, 5.5vw, 48px);
+      font-weight: 900;
+      margin-top: 4px;
+      letter-spacing: -0.03em;
+      color: var(--ink);
     }
 
+    /* ── EDITOR ── */
     details {
       width: min(620px, 100%);
-      margin: 26px auto 0;
+      margin: 28px auto 0;
       text-align: left;
-      background: rgba(255,255,255,0.72);
-      border: 1px solid rgba(17,24,39,0.08);
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(17,24,39,0.08);
+      background: rgba(255,252,247,0.8);
+      border: 1px solid rgba(26,18,11,0.08);
+      border-radius: 18px;
       overflow: hidden;
     }
 
     summary {
       cursor: pointer;
-      padding: 16px 18px;
-      font-weight: 900;
+      padding: 15px 18px;
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 0.01em;
+      color: var(--ink-soft);
       list-style: none;
+      user-select: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    summary::-webkit-details-marker {
-      display: none;
+    summary::-webkit-details-marker { display: none; }
+
+    .summary-icon {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: rgba(232,97,26,0.1);
+      color: var(--accent-orange);
+      display: grid;
+      place-items: center;
+      font-size: 16px;
+      line-height: 1;
+      transition: transform 0.2s ease;
     }
 
-    summary::after {
-      content: "＋";
-      float: right;
-      color: #6b7280;
-    }
-
-    details[open] summary::after {
-      content: "−";
-    }
+    details[open] .summary-icon { transform: rotate(45deg); }
 
     .editor {
       padding: 0 18px 18px;
+      border-top: 1px solid rgba(26,18,11,0.06);
     }
 
     .editor p {
       color: var(--muted);
-      margin: 0 0 10px;
-      line-height: 1.4;
+      margin: 12px 0 10px;
+      font-size: 13.5px;
+      line-height: 1.45;
     }
 
     textarea {
       width: 100%;
-      min-height: 145px;
+      min-height: 140px;
       resize: vertical;
-      border: 1px solid rgba(17,24,39,0.12);
-      border-radius: 16px;
+      border: 1px solid rgba(26,18,11,0.1);
+      border-radius: 14px;
       padding: 13px;
-      font: 16px/1.45 inherit;
+      font: 15px/1.5 'DM Sans', sans-serif;
       outline: none;
-      background: rgba(255,255,255,0.88);
+      background: rgba(255,255,255,0.9);
       color: var(--ink);
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
 
     textarea:focus {
-      border-color: rgba(79, 70, 229, 0.65);
-      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+      border-color: rgba(232, 97, 26, 0.45);
+      box-shadow: 0 0 0 4px rgba(232, 97, 26, 0.08);
+    }
+
+    .editor-buttons {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
     }
 
     .small-button {
-      margin-top: 12px;
-      padding: 11px 16px;
-      border-radius: 14px;
+      padding: 11px 18px;
+      border-radius: 12px;
       color: white;
-      background: #111827;
-      font-size: 15px;
+      background: var(--ink);
+      font-size: 14px;
+    }
+
+    .small-button:hover:not(:disabled) {
+      background: var(--accent-orange);
+      box-shadow: 0 8px 20px rgba(232,97,26,0.26);
     }
 
     .saved-status {
-      margin-top: 10px;
+      margin-top: 9px;
       color: #16a34a;
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 700;
       min-height: 18px;
     }
 
+    /* ── FOOTER ── */
     .footer-note {
       margin-top: 18px;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 12.5px;
     }
 
     .support-section {
@@ -333,37 +403,29 @@
       min-height: 48px;
     }
 
+    /* ── MOBILE ── */
     @media (max-width: 520px) {
-      body {
-        padding: 20px 12px;
-      }
-
-      .app-card {
-        border-radius: 24px;
-      }
-
-      .wheel-container {
-        margin-top: 10px;
-      }
+      body { padding: 22px 12px 48px; }
+      .app-card { border-radius: 22px; }
+      .wheel-container { margin-top: 8px; }
 
       #spinButton,
       .secondary-button,
       .small-button {
         width: 100%;
+        text-align: center;
       }
 
-      .editor-buttons {
-        justify-content: center;
-      }
+      .editor-buttons { justify-content: center; }
     }
   </style>
 </head>
 <body>
   <main class="page">
     <section class="hero">
-      <div class="badge">Meal Decider</div>
-      <h1>Where should we eat?</h1>
-      <p class="subtitle">Add the meal options, send this page around, and let the wheel decide.</p>
+      <div class="badge">🍽 Meal Decider</div>
+      <h1>What are we <span>eating?</span></h1>
+      <p class="subtitle">Add your options, spin the wheel, and let fate decide tonight's dinner.</p>
     </section>
 
     <section class="app-card">
@@ -376,20 +438,23 @@
           </div>
 
           <div class="button-row">
-            <button id="spinButton">Spin the Wheel</button>
+            <button id="spinButton">🎡 Spin</button>
             <button class="secondary-button" onclick="resetWheel()">Reset</button>
           </div>
 
           <div id="resultCard">
-            <div class="result-label">Today’s pick</div>
+            <div class="result-label">Tonight's pick</div>
             <div id="result"></div>
           </div>
         </div>
 
         <details>
-          <summary>Edit meal options</summary>
+          <summary>
+            Edit meal options
+            <span class="summary-icon">+</span>
+          </summary>
           <div class="editor">
-            <p>Put one meal/place per line, then click update. Your list saves only on this device/browser.</p>
+            <p>One meal or place per line. Your list is saved to this device automatically.</p>
             <textarea id="optionsBox">Pizza
 Burgers
 Sushi
@@ -399,14 +464,14 @@ Mediterranean
 Deli
 Salad</textarea>
             <div class="editor-buttons">
-              <button class="small-button" onclick="updateOptions()">Update & Save Wheel</button>
-              <button class="secondary-button" onclick="clearSavedOptions()">Clear Saved Options</button>
+              <button class="small-button" onclick="updateOptions()">Update Wheel</button>
+              <button class="secondary-button" onclick="clearSavedOptions()">Reset to Defaults</button>
             </div>
             <div id="savedStatus" class="saved-status"></div>
           </div>
         </details>
 
-        <div class="footer-note">Tip: share the link so anyone can open the Meal Wheel in a browser.</div>
+        <div class="footer-note">Tip: share this page with friends so everyone can spin.</div>
 
         <div class="support-section">
           <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="creator0FD" data-color="#FFDD00" data-emoji="" data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff"></script>
@@ -423,61 +488,46 @@ Salad</textarea>
     const resultCard = document.getElementById("resultCard");
     const savedStatus = document.getElementById("savedStatus");
 
-    const defaultOptions = [
-      "Pizza",
-      "Burgers",
-      "Sushi",
-      "Mexican",
-      "Chinese",
-      "Mediterranean",
-      "Deli",
-      "Salad"
-    ];
+    const defaultOptions = ["Pizza","Burgers","Sushi","Mexican","Chinese","Mediterranean","Deli","Salad"];
 
     let options = [...defaultOptions];
     let currentRotation = -Math.PI / 2;
     let spinning = false;
 
+    // Warm, food-forward palette — pairs + outer glow
     const colors = [
-      ["#fb7185", "#e11d48"],
-      ["#fb923c", "#ea580c"],
-      ["#facc15", "#ca8a04"],
-      ["#4ade80", "#16a34a"],
-      ["#2dd4bf", "#0f766e"],
-      ["#38bdf8", "#0284c7"],
+      ["#ff8c42", "#e8611a"],
+      ["#ffbe3d", "#d97706"],
+      ["#a3e635", "#65a30d"],
+      ["#34d399", "#059669"],
+      ["#22d3ee", "#0891b2"],
       ["#818cf8", "#4f46e5"],
-      ["#c084fc", "#9333ea"],
       ["#f472b6", "#db2777"],
-      ["#a3e635", "#65a30d"]
+      ["#fb7185", "#e11d48"],
+      ["#fbbf24", "#b45309"],
+      ["#86efac", "#16a34a"]
     ];
 
-    function showSavedStatus(message) {
-      savedStatus.textContent = message;
-      setTimeout(() => {
-        savedStatus.textContent = "";
-      }, 2400);
+    function showSavedStatus(msg) {
+      savedStatus.textContent = msg;
+      setTimeout(() => { savedStatus.textContent = ""; }, 2600);
     }
 
     function loadSavedOptions() {
       const saved = localStorage.getItem("mealWheelOptions");
-
       if (!saved) return;
-
       try {
         const parsed = JSON.parse(saved);
-
         if (Array.isArray(parsed) && parsed.length >= 2) {
           options = parsed;
           document.getElementById("optionsBox").value = parsed.join("\n");
         }
-      } catch (error) {
-        localStorage.removeItem("mealWheelOptions");
-      }
+      } catch { localStorage.removeItem("mealWheelOptions"); }
     }
 
     function saveOptionsToDevice() {
       localStorage.setItem("mealWheelOptions", JSON.stringify(options));
-      showSavedStatus("Saved on this device.");
+      showSavedStatus("✓ Saved to this device");
     }
 
     function clearSavedOptions() {
@@ -488,88 +538,112 @@ Salad</textarea>
       result.textContent = "";
       currentRotation = -Math.PI / 2;
       drawWheel();
-      showSavedStatus("Saved options cleared.");
+      showSavedStatus("✓ Reset to defaults");
     }
 
     function drawWheel() {
-      const center = canvas.width / 2;
-      const radius = center - 24;
+      const W = canvas.width;
+      const center = W / 2;
+      const radius = center - 22;
       const slice = (2 * Math.PI) / options.length;
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, W, W);
 
       for (let i = 0; i < options.length; i++) {
         const start = currentRotation + i * slice;
         const end = start + slice;
-        const gradient = ctx.createRadialGradient(center, center, 40, center, center, radius);
-        gradient.addColorStop(0, colors[i % colors.length][0]);
-        gradient.addColorStop(1, colors[i % colors.length][1]);
+
+        // Radial gradient per slice
+        const grad = ctx.createRadialGradient(center, center, 50, center, center, radius);
+        grad.addColorStop(0, colors[i % colors.length][0]);
+        grad.addColorStop(1, colors[i % colors.length][1]);
 
         ctx.beginPath();
         ctx.moveTo(center, center);
         ctx.arc(center, center, radius, start, end);
         ctx.closePath();
-        ctx.fillStyle = gradient;
+        ctx.fillStyle = grad;
         ctx.fill();
 
-        ctx.strokeStyle = "rgba(255,255,255,0.76)";
-        ctx.lineWidth = 5;
+        // Divider lines
+        ctx.strokeStyle = "rgba(255,252,247,0.7)";
+        ctx.lineWidth = 4;
         ctx.stroke();
 
+        // Label
         ctx.save();
         ctx.translate(center, center);
         ctx.rotate(start + slice / 2);
 
         const label = options[i];
-        const fontSize = options.length > 10 ? 20 : options.length > 8 ? 23 : 28;
-        ctx.font = "900 " + fontSize + "px Arial";
+        const n = options.length;
+        const fontSize = n > 10 ? 18 : n > 8 ? 21 : 26;
+        ctx.font = `800 ${fontSize}px 'DM Sans', sans-serif`;
         ctx.textAlign = "right";
         ctx.textBaseline = "middle";
+        ctx.shadowColor = "rgba(0,0,0,0.28)";
+        ctx.shadowBlur = 6;
+        ctx.fillStyle = "rgba(255,255,255,0.97)";
 
-        ctx.shadowColor = "rgba(0,0,0,0.32)";
-        ctx.shadowBlur = 5;
-        ctx.fillStyle = "white";
-
-        const maxWidth = radius - 88;
+        const maxWidth = radius - 90;
         let display = label;
-        while (ctx.measureText(display).width > maxWidth && display.length > 4) {
+        while (ctx.measureText(display).width > maxWidth && display.length > 3) {
           display = display.slice(0, -2) + "…";
         }
 
-        ctx.fillText(display, radius - 32, 0);
+        ctx.fillText(display, radius - 28, 0);
         ctx.restore();
       }
 
+      // Outer ring stroke
       ctx.save();
       ctx.beginPath();
       ctx.arc(center, center, radius, 0, 2 * Math.PI);
-      ctx.strokeStyle = "rgba(17,24,39,0.12)";
-      ctx.lineWidth = 8;
+      ctx.strokeStyle = "rgba(26,18,11,0.1)";
+      ctx.lineWidth = 6;
       ctx.stroke();
       ctx.restore();
 
+      // Center hub
+      const hubR = 68;
+
+      // Hub glow
+      const hubGlow = ctx.createRadialGradient(center, center, 0, center, center, hubR + 16);
+      hubGlow.addColorStop(0, "rgba(232,97,26,0.18)");
+      hubGlow.addColorStop(1, "transparent");
       ctx.beginPath();
-      ctx.arc(center, center, 72, 0, 2 * Math.PI);
-      ctx.fillStyle = "#111827";
+      ctx.arc(center, center, hubR + 16, 0, 2 * Math.PI);
+      ctx.fillStyle = hubGlow;
       ctx.fill();
-      ctx.lineWidth = 8;
-      ctx.strokeStyle = "rgba(255,255,255,0.9)";
+
+      // Hub fill
+      const hubGrad = ctx.createRadialGradient(center - 14, center - 14, 0, center, center, hubR);
+      hubGrad.addColorStop(0, "#3d2111");
+      hubGrad.addColorStop(1, "#1a120b");
+      ctx.beginPath();
+      ctx.arc(center, center, hubR, 0, 2 * Math.PI);
+      ctx.fillStyle = hubGrad;
+      ctx.fill();
+      ctx.lineWidth = 6;
+      ctx.strokeStyle = "rgba(255,252,247,0.88)";
       ctx.stroke();
 
-      ctx.fillStyle = "white";
-      ctx.font = "900 22px Arial";
+      // Hub text
+      ctx.fillStyle = "rgba(255,252,247,0.95)";
+      ctx.font = "900 20px 'Playfair Display', serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText("MEAL", center, center - 5);
+      ctx.shadowColor = "transparent";
+      ctx.fillText("SPIN", center, center - 6);
 
-      ctx.font = "700 13px Arial";
-      ctx.fillStyle = "rgba(255,255,255,0.72)";
-      ctx.fillText("SPIN", center, center + 19);
+      ctx.font = "600 11px 'DM Sans', sans-serif";
+      ctx.fillStyle = "rgba(255,252,247,0.48)";
+      ctx.letterSpacing = "0.08em";
+      ctx.fillText("TO EAT", center, center + 14);
     }
 
     function spinWheel() {
       if (spinning || options.length < 2) return;
-
       spinning = true;
       resultCard.style.display = "none";
       result.textContent = "";
@@ -578,7 +652,7 @@ Salad</textarea>
       const spins = Math.random() * 4 + 7;
       const extra = Math.random() * 2 * Math.PI;
       const targetRotation = currentRotation + spins * 2 * Math.PI + extra;
-      const duration = 4700;
+      const duration = 4800;
       const start = performance.now();
       const initialRotation = currentRotation;
 
@@ -608,16 +682,12 @@ Salad</textarea>
     function getWinner() {
       const slice = (2 * Math.PI) / options.length;
       const pointerAngle = (3 * Math.PI / 2 - currentRotation + 2 * Math.PI) % (2 * Math.PI);
-      const index = Math.floor(pointerAngle / slice) % options.length;
-      return options[index];
+      return options[Math.floor(pointerAngle / slice) % options.length];
     }
 
     function updateOptions() {
-      const box = document.getElementById("optionsBox");
-      const newOptions = box.value
-        .split("\n")
-        .map(x => x.trim())
-        .filter(Boolean);
+      const newOptions = document.getElementById("optionsBox").value
+        .split("\n").map(x => x.trim()).filter(Boolean);
 
       if (newOptions.length < 2) {
         alert("Please enter at least two meal options.");
