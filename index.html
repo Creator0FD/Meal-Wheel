@@ -425,7 +425,7 @@
     <section class="hero">
       <div class="badge">🍽 Meal Decider</div>
       <h1>What are we <span>eating?</span></h1>
-      <p class="subtitle">Add your options, spin the wheel, and let fate decide tonight's dinner.</p>
+      <p class="subtitle">Add your options, spin the wheel, and let fate make the hard decisions.</p>
     </section>
 
     <section class="app-card">
@@ -443,7 +443,7 @@
           </div>
 
           <div id="resultCard">
-            <div class="result-label">Tonight's pick</div>
+            <div class="result-label" id="resultLabel">Tonight's pick</div>
             <div id="result"></div>
           </div>
         </div>
@@ -669,6 +669,7 @@ Salad</textarea>
         } else {
           currentRotation = currentRotation % (2 * Math.PI);
           const winner = getWinner();
+          document.getElementById("resultLabel").textContent = getResultLabel();
           result.textContent = winner;
           resultCard.style.display = "block";
           spinning = false;
@@ -677,6 +678,15 @@ Salad</textarea>
       }
 
       requestAnimationFrame(animate);
+    }
+
+    function getResultLabel() {
+      const h = new Date().getHours();
+      if (h >= 5 && h < 11)  return "This morning's pick";
+      if (h >= 11 && h < 14) return "Today's lunch";
+      if (h >= 14 && h < 17) return "This afternoon's pick";
+      if (h >= 17 && h < 21) return "Tonight's dinner";
+      return "Late-night pick";
     }
 
     function getWinner() {
@@ -710,6 +720,8 @@ Salad</textarea>
     }
 
     spinButton.addEventListener("click", spinWheel);
+    canvas.addEventListener("click", spinWheel);
+    canvas.style.cursor = "pointer";
     loadSavedOptions();
     drawWheel();
   </script>
